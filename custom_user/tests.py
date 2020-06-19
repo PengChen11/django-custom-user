@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .models import CustomUser
+
 # Create your tests here.
 
 class CustomUsersTests(TestCase):
@@ -16,6 +17,12 @@ class CustomUsersTests(TestCase):
     def test_string_representation(self):
         user = CustomUser(email='tester@email.com')
         self.assertEqual(str(user), user.email)
+
+        with self.assertRaises(Exception):
+            user2 = get_user_model().objects.create_user(
+            email = 'tester@email.com',
+            password = 'pass'
+        )
 
 
     def test_custom_user(self):
