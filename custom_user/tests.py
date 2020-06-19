@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .models import CustomUser
+from django.db.utils import IntegrityError
 
 # Create your tests here.
 
@@ -18,15 +19,17 @@ class CustomUsersTests(TestCase):
         user = CustomUser(email='tester@email.com')
         self.assertEqual(str(user), user.email)
 
-        with self.assertRaises(Exception):
+
+    def test_custom_user(self):
+        self.assertEqual(f'{self.user.email}', 'tester@email.com')
+
+
+    def test_duplicate_user_error(self):
+        with self.assertRaises(IntegrityError):
             user2 = get_user_model().objects.create_user(
             email = 'tester@email.com',
             password = 'pass'
         )
-
-
-    def test_custom_user(self):
-        self.assertEqual(f'{self.user.email}', 'tester@email.com')
 
 
     def test_Home_View(self):
